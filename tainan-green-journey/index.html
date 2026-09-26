@@ -19,7 +19,66 @@
 @media print{body{background:#fff;font-size:10pt}.hero,.tabs,.intro,.controls,.add-row,.custom-box,.stop-actions,.stop-inputs,.verified,#places,#guide,footer,.action-stack,.source-note,.leg-link{display:none!important}.wrap{width:100%}.planner-grid,.results-grid{display:block}.panel{box-shadow:none;border:1px solid #aaa;break-inside:avoid}.endpoints,.day-card,.schedule,.review{margin-bottom:10px}.section-heading{margin:0 0 10px}main>section:not(.intro){margin:0}.day-card{padding:12px}.stop{padding:5px;margin:3px 0}.results-grid .panel{padding:12px}.schedule h4{margin:7px 0 3px}.timeline-row{padding:3px 0}.place-card{break-inside:avoid}}
 
 </style>
-  <script>
+</head>
+<body>
+  <a class="skip" href="#main">跳到主要內容</a>
+  <header class="hero">
+    <div class="wrap hero-inner">
+      <div class="eyebrow">荒野保護協會親子團 · 大人活動工具</div>
+      <h1>府城綠行<span class="title-dot">.</span></h1>
+      <p class="hero-lead">用一個下午、一個夜晚和隔天早晨，安排一趟有根據的綠色生活旅行。</p>
+      <div class="hero-meta"><span>20 個臺南點位</span><span>4 組抽籤</span><span>第一日 14:00 → 第二日 12:00</span></div>
+    </div>
+  </header>
+  <nav class="tabs" aria-label="頁面區段">
+    <div class="wrap tab-inner">
+      <a href="#planner">01 規劃路線</a><a href="#places">02 點位圖鑑</a><a href="#guide">03 組長教學</a>
+    </div>
+  </nav>
+  <main id="main" class="wrap">
+    <section class="intro panel" aria-labelledby="mission-title">
+      <div><p class="kicker">THE MISSION / 任務</p><h2 id="mission-title">把選擇說清楚，旅程才有深度。</h2></div>
+      <p>每組從抽到的起點走到終點，途中經過中西區，選 5～7 個停留點及一間住宿。請安排兩餐、二手或修復、文化與自然觀察，並用 Google 地圖查證逐段交通時間。<strong>古蹟是文化學習點，不等於環保認證。</strong></p>
+    </section>
+
+    <section id="planner" aria-labelledby="planner-title">
+      <div class="section-heading"><div><p class="kicker">01 / PLAN</p><h2 id="planner-title">規劃路線</h2></div><p>先抽籤，再依順路程度加入點位。停留與交通分鐘數都可調整。</p></div>
+      <div class="planner-grid">
+        <aside class="panel controls">
+          <div class="control-row"><label for="group-select">目前小組</label><select id="group-select" aria-label="選擇小組"><option value="0">第 1 組</option><option value="1">第 2 組</option><option value="2">第 3 組</option><option value="3">第 4 組</option></select></div>
+          <button id="draw-btn" class="button primary full">為四組抽起點與終點</button>
+          <p class="small muted">兩組東區→安平、兩組安平→東區；起終點不重複。重抽會清除四組已排的行程。</p>
+          <div id="draw-result" aria-live="polite"></div>
+          <div class="divider"></div>
+          <div class="control-row"><label for="hotel-select">今晚住哪裡</label><select id="hotel-select"><option value="">請選住宿</option></select></div>
+          <div class="control-row"><label for="checkin-travel">前往住宿交通</label><div class="number-wrap"><input id="checkin-travel" type="number" min="0" max="240" step="5" inputmode="numeric"><span>分鐘</span></div></div>
+          <div class="control-row"><label for="checkin-duration">入住與安頓</label><div class="number-wrap"><input id="checkin-duration" type="number" min="0" max="180" step="5" inputmode="numeric"><span>分鐘</span></div></div>
+          <p class="small muted">第二天從住宿處 08:00 出發。住宿價格、空房與實際入住時間請自行查核。</p>
+        </aside>
+
+        <div class="plan-main">
+          <div class="endpoints panel"><div><span class="endpoint-label">起點 · 第一天 14:00</span><strong id="start-name">請先抽籤</strong></div><span class="route-arrow" aria-hidden="true">→</span><div><span class="endpoint-label">終點 · 隔日中午前</span><strong id="end-name">請先抽籤</strong></div></div>
+          <div class="day-card panel"><div class="day-head"><div><span class="day-index">DAY 01</span><h3>第一天下午與夜晚</h3></div><span>14:00 開始</span></div><div id="day1-list" class="stop-list"></div><div class="add-row"><select id="add-day1" aria-label="選擇第一天要加入的點位"></select><button class="button secondary" data-add="day1">加入</button></div></div>
+          <div class="day-card panel"><div class="day-head"><div><span class="day-index">DAY 02</span><h3>隔天早晨</h3></div><span>08:00 從住宿出發</span></div><div id="day2-list" class="stop-list"></div><div class="add-row"><select id="add-day2" aria-label="選擇第二天要加入的點位"></select><button class="button secondary" data-add="day2">加入</button></div></div>
+          <details class="panel custom-box"><summary>＋ 加入自選餐廳或補充點位</summary><form id="custom-form" class="custom-form"><label>名稱<input name="name" maxlength="70" required placeholder="例如：已查證的綠食飯桌"></label><label>地址<input name="address" maxlength="130" required placeholder="請填完整地址供地圖搜尋"></label><label>類型<select name="tag"><option>食</option><option>循環</option><option>衣</option><option>文化</option><option>自然</option><option>行</option></select></label><label>建議停留<input name="duration" type="number" min="10" max="240" step="5" value="60" required></label><label>安排在<select name="day"><option value="day1">第一天</option><option value="day2">第二天</option></select></label><button class="button secondary" type="submit">加入此組行程</button></form></details>
+        </div>
+      </div>
+      <div class="results-grid">
+        <section class="panel schedule" aria-labelledby="schedule-title"><div class="section-mini-head"><div><p class="kicker">TIMELINE</p><h3 id="schedule-title">行程時間表</h3></div><span class="small muted">交通為各組自行填入</span></div><div id="timeline" aria-live="polite"></div></section>
+        <section class="panel review" aria-labelledby="review-title"><p class="kicker">CHECK / 查核</p><h3 id="review-title">提案檢查</h3><div id="checks" aria-live="polite"></div><div class="action-stack"><button id="copy-btn" class="button primary full">複製行程文字</button><button id="print-btn" class="button outline full">列印／存成 PDF</button></div><p id="copy-feedback" class="small muted" role="status"></p></section>
+      </div>
+    </section>
+
+    <section id="places" aria-labelledby="places-title"><div class="section-heading"><div><p class="kicker">02 / EXPLORE</p><h2 id="places-title">20 個點位圖鑑</h2></div><p>分鐘數是活動用的建議停留時間，可在行程中修改；開放時間及資格須在活動日前再查。</p></div><div class="filter-row" id="filters" aria-label="依區域篩選點位"></div><div id="place-grid" class="place-grid"></div><p class="source-note">資料依據：<a href="https://data.tainan.gov.tw/Resource/114f6054-b4ae-4ee8-a436-66997b055cbf" target="_blank" rel="noopener">臺南市環保標章旅宿名單</a>、<a href="https://greenlifestyle.moenv.gov.tw/GIS" target="_blank" rel="noopener">環境部淨零綠生活地圖</a>與各點位所附來源。官方名單、營業與交通資訊可能變動。</p></section>
+
+    <section id="guide" aria-labelledby="guide-title"><div class="section-heading"><div><p class="kicker">03 / FIELD GUIDE</p><h2 id="guide-title">組長手機教學</h2></div><p>網頁排「順序與時間」；Google 地圖存「位置」並查「每一段實際路線」。</p></div><div class="guide-grid">
+      <article class="panel guide-card"><span class="step">A</span><h3>在 Google 地圖建小組清單</h3><ol><li>組長開啟手機的 <strong>Google 地圖</strong>，登入 Google 帳號。</li><li>點底部「<strong>你</strong>」或「已儲存」→「<strong>新增清單</strong>」，命名為「府城綠行・第 X 組」。</li><li>在本頁每張點位卡按「在地圖開啟」，確認地址後按 Google 地圖的「<strong>儲存</strong>」，選取剛建立的清單。</li><li>回到清單的「⋯」選單，使用「<strong>邀請協作者</strong>」讓組員也能加點；發表時用「分享清單」傳檢視連結。</li></ol><p class="small muted">不同手機版本的底部分頁可能顯示「你」或「已儲存」。協作清單會顯示參與者名稱與頭像。</p></article>
+      <article class="panel guide-card"><span class="step">B</span><h3>查逐段交通並填回來</h3><ol><li>在上方時間表點該段的「<strong>查路線</strong>」，開啟 Google 地圖。</li><li>試步行、公車或自行車，記下合理的時間與轉乘；回到行程中的「交通分鐘」修改。</li><li>跨區、公車等待及吃飯時間要留緩衝。第一天回到住宿、隔天由住宿出發，也要各查一次。</li><li>Google 地圖清單用來看所有地點；<strong>行程先後與停留時間以本網頁為準</strong>。</li></ol><p class="small muted">Google 地圖的大眾運輸不支援多目的地路線，因此這裡使用逐段查詢。</p></article>
+      <article class="panel guide-card"><span class="step">C</span><h3>90～110 分鐘活動流程</h3><ol><li>10 分：主持人說明、四組抽籤。</li><li>15 分：組長建清單，組員分工查餐飲、住宿、交通與文化。</li><li>35 分：選點、排序、填停留及交通時間。</li><li>15 分：核對營業、費用、標章和雨天備案。</li><li>每組 5 分鐘發表，再用 10 分鐘比較取捨。</li></ol><p class="small muted">網頁草稿會保存在目前這支手機的瀏覽器。發表前請複製行程文字；換手機不會自動同步。</p></article>
+    </div><div class="discussion panel"><div><p class="kicker">討論提示</p><h3>「有標章」能證明什麼？</h3></div><p>比較一間較遠的標章旅宿與一間交通方便的旅宿；探討二手物是否一定要買、古蹟遊客增加對居民的影響。每組至少說出一項已查到的依據，以及一項仍不確定的資訊。</p></div><p class="source-note">Google 操作依據：<a href="https://support.google.com/maps/answer/7280933?co=GENIE.Platform%3DAndroid&hl=zh-Hant" target="_blank" rel="noopener">Android 建立地點清單</a>、<a href="https://support.google.com/maps/answer/7280933?co=GENIE.Platform%3DiOS&hl=en" target="_blank" rel="noopener">iPhone 建立地點清單</a>、<a href="https://support.google.com/maps/answer/144339?co=GENIE.Platform%3DAndroid&hl=zh-HK" target="_blank" rel="noopener">路線說明</a>。</p></section>
+  </main>
+  <footer><div class="wrap footer-inner"><strong>府城綠行</strong><span>從地圖走向選擇的理由 · 活動規劃示範版</span><a href="#main">回到頂端 ↑</a></div></footer>
+<script>
 // Suggested dwell times are editorial activity estimates, not operator advice.
 window.PLACES = [
   {id:'station',name:'臺南車站',area:'東區',tags:['行','文化'],minutes:30,address:'臺南市東區北門路二段4號',question:'不用私人汽車，接下來怎麼走？',source:'https://www.twtainan.net/zh-tw/attractions/detail/726/'},
@@ -45,7 +104,7 @@ window.PLACES = [
 ];
 
 </script>
-  <script>
+<script>
 (() => {
   'use strict';
   const KEY = 'tainan-green-journey-v1';
@@ -213,64 +272,5 @@ window.PLACES = [
 })();
 
 </script>
-</head>
-<body>
-  <a class="skip" href="#main">跳到主要內容</a>
-  <header class="hero">
-    <div class="wrap hero-inner">
-      <div class="eyebrow">荒野保護協會親子團 · 大人活動工具</div>
-      <h1>府城綠行<span class="title-dot">.</span></h1>
-      <p class="hero-lead">用一個下午、一個夜晚和隔天早晨，安排一趟有根據的綠色生活旅行。</p>
-      <div class="hero-meta"><span>20 個臺南點位</span><span>4 組抽籤</span><span>第一日 14:00 → 第二日 12:00</span></div>
-    </div>
-  </header>
-  <nav class="tabs" aria-label="頁面區段">
-    <div class="wrap tab-inner">
-      <a href="#planner">01 規劃路線</a><a href="#places">02 點位圖鑑</a><a href="#guide">03 組長教學</a>
-    </div>
-  </nav>
-  <main id="main" class="wrap">
-    <section class="intro panel" aria-labelledby="mission-title">
-      <div><p class="kicker">THE MISSION / 任務</p><h2 id="mission-title">把選擇說清楚，旅程才有深度。</h2></div>
-      <p>每組從抽到的起點走到終點，途中經過中西區，選 5～7 個停留點及一間住宿。請安排兩餐、二手或修復、文化與自然觀察，並用 Google 地圖查證逐段交通時間。<strong>古蹟是文化學習點，不等於環保認證。</strong></p>
-    </section>
-
-    <section id="planner" aria-labelledby="planner-title">
-      <div class="section-heading"><div><p class="kicker">01 / PLAN</p><h2 id="planner-title">規劃路線</h2></div><p>先抽籤，再依順路程度加入點位。停留與交通分鐘數都可調整。</p></div>
-      <div class="planner-grid">
-        <aside class="panel controls">
-          <div class="control-row"><label for="group-select">目前小組</label><select id="group-select" aria-label="選擇小組"><option value="0">第 1 組</option><option value="1">第 2 組</option><option value="2">第 3 組</option><option value="3">第 4 組</option></select></div>
-          <button id="draw-btn" class="button primary full">為四組抽起點與終點</button>
-          <p class="small muted">兩組東區→安平、兩組安平→東區；起終點不重複。重抽會清除四組已排的行程。</p>
-          <div id="draw-result" aria-live="polite"></div>
-          <div class="divider"></div>
-          <div class="control-row"><label for="hotel-select">今晚住哪裡</label><select id="hotel-select"><option value="">請選住宿</option></select></div>
-          <div class="control-row"><label for="checkin-travel">前往住宿交通</label><div class="number-wrap"><input id="checkin-travel" type="number" min="0" max="240" step="5" inputmode="numeric"><span>分鐘</span></div></div>
-          <div class="control-row"><label for="checkin-duration">入住與安頓</label><div class="number-wrap"><input id="checkin-duration" type="number" min="0" max="180" step="5" inputmode="numeric"><span>分鐘</span></div></div>
-          <p class="small muted">第二天從住宿處 08:00 出發。住宿價格、空房與實際入住時間請自行查核。</p>
-        </aside>
-
-        <div class="plan-main">
-          <div class="endpoints panel"><div><span class="endpoint-label">起點 · 第一天 14:00</span><strong id="start-name">請先抽籤</strong></div><span class="route-arrow" aria-hidden="true">→</span><div><span class="endpoint-label">終點 · 隔日中午前</span><strong id="end-name">請先抽籤</strong></div></div>
-          <div class="day-card panel"><div class="day-head"><div><span class="day-index">DAY 01</span><h3>第一天下午與夜晚</h3></div><span>14:00 開始</span></div><div id="day1-list" class="stop-list"></div><div class="add-row"><select id="add-day1" aria-label="選擇第一天要加入的點位"></select><button class="button secondary" data-add="day1">加入</button></div></div>
-          <div class="day-card panel"><div class="day-head"><div><span class="day-index">DAY 02</span><h3>隔天早晨</h3></div><span>08:00 從住宿出發</span></div><div id="day2-list" class="stop-list"></div><div class="add-row"><select id="add-day2" aria-label="選擇第二天要加入的點位"></select><button class="button secondary" data-add="day2">加入</button></div></div>
-          <details class="panel custom-box"><summary>＋ 加入自選餐廳或補充點位</summary><form id="custom-form" class="custom-form"><label>名稱<input name="name" maxlength="70" required placeholder="例如：已查證的綠食飯桌"></label><label>地址<input name="address" maxlength="130" required placeholder="請填完整地址供地圖搜尋"></label><label>類型<select name="tag"><option>食</option><option>循環</option><option>衣</option><option>文化</option><option>自然</option><option>行</option></select></label><label>建議停留<input name="duration" type="number" min="10" max="240" step="5" value="60" required></label><label>安排在<select name="day"><option value="day1">第一天</option><option value="day2">第二天</option></select></label><button class="button secondary" type="submit">加入此組行程</button></form></details>
-        </div>
-      </div>
-      <div class="results-grid">
-        <section class="panel schedule" aria-labelledby="schedule-title"><div class="section-mini-head"><div><p class="kicker">TIMELINE</p><h3 id="schedule-title">行程時間表</h3></div><span class="small muted">交通為各組自行填入</span></div><div id="timeline" aria-live="polite"></div></section>
-        <section class="panel review" aria-labelledby="review-title"><p class="kicker">CHECK / 查核</p><h3 id="review-title">提案檢查</h3><div id="checks" aria-live="polite"></div><div class="action-stack"><button id="copy-btn" class="button primary full">複製行程文字</button><button id="print-btn" class="button outline full">列印／存成 PDF</button></div><p id="copy-feedback" class="small muted" role="status"></p></section>
-      </div>
-    </section>
-
-    <section id="places" aria-labelledby="places-title"><div class="section-heading"><div><p class="kicker">02 / EXPLORE</p><h2 id="places-title">20 個點位圖鑑</h2></div><p>分鐘數是活動用的建議停留時間，可在行程中修改；開放時間及資格須在活動日前再查。</p></div><div class="filter-row" id="filters" aria-label="依區域篩選點位"></div><div id="place-grid" class="place-grid"></div><p class="source-note">資料依據：<a href="https://data.tainan.gov.tw/Resource/114f6054-b4ae-4ee8-a436-66997b055cbf" target="_blank" rel="noopener">臺南市環保標章旅宿名單</a>、<a href="https://greenlifestyle.moenv.gov.tw/GIS" target="_blank" rel="noopener">環境部淨零綠生活地圖</a>與各點位所附來源。官方名單、營業與交通資訊可能變動。</p></section>
-
-    <section id="guide" aria-labelledby="guide-title"><div class="section-heading"><div><p class="kicker">03 / FIELD GUIDE</p><h2 id="guide-title">組長手機教學</h2></div><p>網頁排「順序與時間」；Google 地圖存「位置」並查「每一段實際路線」。</p></div><div class="guide-grid">
-      <article class="panel guide-card"><span class="step">A</span><h3>在 Google 地圖建小組清單</h3><ol><li>組長開啟手機的 <strong>Google 地圖</strong>，登入 Google 帳號。</li><li>點底部「<strong>你</strong>」或「已儲存」→「<strong>新增清單</strong>」，命名為「府城綠行・第 X 組」。</li><li>在本頁每張點位卡按「在地圖開啟」，確認地址後按 Google 地圖的「<strong>儲存</strong>」，選取剛建立的清單。</li><li>回到清單的「⋯」選單，使用「<strong>邀請協作者</strong>」讓組員也能加點；發表時用「分享清單」傳檢視連結。</li></ol><p class="small muted">不同手機版本的底部分頁可能顯示「你」或「已儲存」。協作清單會顯示參與者名稱與頭像。</p></article>
-      <article class="panel guide-card"><span class="step">B</span><h3>查逐段交通並填回來</h3><ol><li>在上方時間表點該段的「<strong>查路線</strong>」，開啟 Google 地圖。</li><li>試步行、公車或自行車，記下合理的時間與轉乘；回到行程中的「交通分鐘」修改。</li><li>跨區、公車等待及吃飯時間要留緩衝。第一天回到住宿、隔天由住宿出發，也要各查一次。</li><li>Google 地圖清單用來看所有地點；<strong>行程先後與停留時間以本網頁為準</strong>。</li></ol><p class="small muted">Google 地圖的大眾運輸不支援多目的地路線，因此這裡使用逐段查詢。</p></article>
-      <article class="panel guide-card"><span class="step">C</span><h3>90～110 分鐘活動流程</h3><ol><li>10 分：主持人說明、四組抽籤。</li><li>15 分：組長建清單，組員分工查餐飲、住宿、交通與文化。</li><li>35 分：選點、排序、填停留及交通時間。</li><li>15 分：核對營業、費用、標章和雨天備案。</li><li>每組 5 分鐘發表，再用 10 分鐘比較取捨。</li></ol><p class="small muted">網頁草稿會保存在目前這支手機的瀏覽器。發表前請複製行程文字；換手機不會自動同步。</p></article>
-    </div><div class="discussion panel"><div><p class="kicker">討論提示</p><h3>「有標章」能證明什麼？</h3></div><p>比較一間較遠的標章旅宿與一間交通方便的旅宿；探討二手物是否一定要買、古蹟遊客增加對居民的影響。每組至少說出一項已查到的依據，以及一項仍不確定的資訊。</p></div><p class="source-note">Google 操作依據：<a href="https://support.google.com/maps/answer/7280933?co=GENIE.Platform%3DAndroid&hl=zh-Hant" target="_blank" rel="noopener">Android 建立地點清單</a>、<a href="https://support.google.com/maps/answer/7280933?co=GENIE.Platform%3DiOS&hl=en" target="_blank" rel="noopener">iPhone 建立地點清單</a>、<a href="https://support.google.com/maps/answer/144339?co=GENIE.Platform%3DAndroid&hl=zh-HK" target="_blank" rel="noopener">路線說明</a>。</p></section>
-  </main>
-  <footer><div class="wrap footer-inner"><strong>府城綠行</strong><span>從地圖走向選擇的理由 · 活動規劃示範版</span><a href="#main">回到頂端 ↑</a></div></footer>
 </body>
 </html>
